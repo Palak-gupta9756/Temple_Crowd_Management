@@ -3,26 +3,60 @@ import { Users, Clock, TrendingUp, AlertCircle } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-
-// Mock Data for Charts
-const hourlyData = [
-  { time: "6 AM", visitors: 120 },
-  { time: "9 AM", visitors: 450 },
-  { time: "12 PM", visitors: 800 },
-  { time: "3 PM", visitors: 600 },
-  { time: "6 PM", visitors: 950 }, // Peak usually at Aarti
-  { time: "9 PM", visitors: 300 },
-];
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 
 interface CrowdStatusCardProps {
+  templeId: string;
   templeName: string;
   currentWaitTime: number;
   status: "Low" | "Moderate" | "High" | "Very High";
   nextAarti: string;
-  prediction: string;
+  prediction?: string;
 }
 
-export function CrowdStatusCard({ templeName, currentWaitTime, status, nextAarti, prediction }: CrowdStatusCardProps) {
+export function CrowdStatusCard({ templeId, templeName, currentWaitTime, status, nextAarti, prediction: initialPrediction }: CrowdStatusCardProps) {
+  const [prediction, setPrediction] = useState(initialPrediction || "Loading prediction...");
+
+  const { data: history } = useQuery({
+    queryKey: ["crowdHistory", templeId],
+    queryFn: async () => {
+      const res = await fetch(`/api/crowd/${templeId}/history?hours=12`);
+      if (!res.ok) throw new Error("Failed to fetch history");
+      return res.json();
+    },
+    refetchInterval: 60000, // Refresh every minute
+  });
+
+  useEffect(() => {
+    async function fetchPrediction() {
+      try {
+        const res = await fetch(`/api/crowd/${templeId}/prediction`);
+        if (res.ok) {
+          const data = await res.json();
+          setPrediction(data.prediction);
+        }
+      } catch (error) {
+        console.error("Failed to fetch prediction:", error);
+      }
+    }
+    if (!initialPrediction) {
+      fetchPrediction();
+    }
+  }, [templeId, initialPrediction]);
+
+  const hourlyData = history?.slice(-6).map((h: any) => ({
+    time: new Date(h.timestamp).toLocaleTimeString('en-US', { hour: 'numeric', hour12: true }),
+    visitors: h.visitorCount
+  })) || [
+    { time: "6 AM", visitors: 120 },
+    { time: "9 AM", visitors: 450 },
+    { time: "12 PM", visitors: 800 },
+    { time: "3 PM", visitors: 600 },
+    { time: "6 PM", visitors: 950 },
+    { time: "9 PM", visitors: 300 },
+  ];
+
   const statusColor = 
     status === "Low" ? "text-green-600 bg-green-50 border-green-200" :
     status === "Moderate" ? "text-yellow-600 bg-yellow-50 border-yellow-200" :

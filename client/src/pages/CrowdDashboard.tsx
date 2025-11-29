@@ -6,18 +6,35 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar } from "@/components/ui/calendar";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, Legend } from "recharts";
-
-const weeklyData = [
-  { name: "Mon", visitors: 4000 },
-  { name: "Tue", visitors: 3000 },
-  { name: "Wed", visitors: 2000 },
-  { name: "Thu", visitors: 2780 },
-  { name: "Fri", visitors: 1890 },
-  { name: "Sat", visitors: 8390 },
-  { name: "Sun", visitors: 9490 },
-];
+import { useQuery } from "@tanstack/react-query";
 
 export default function CrowdDashboard() {
+  const { data: crowdData } = useQuery({
+    queryKey: ["allCrowdData"],
+    queryFn: async () => {
+      const res = await fetch("/api/crowd/all");
+      if (!res.ok) throw new Error("Failed to fetch crowd data");
+      return res.json();
+    },
+    refetchInterval: 30000,
+  });
+
+  const temples = [
+    { id: "somnath", nextAarti: "7:00 PM" },
+    { id: "dwarka", nextAarti: "7:30 PM" },
+    { id: "ambaji", nextAarti: "7:00 PM" },
+    { id: "pavagadh", nextAarti: "N/A" },
+  ];
+
+  const weeklyData = [
+    { name: "Mon", visitors: 4000 },
+    { name: "Tue", visitors: 3000 },
+    { name: "Wed", visitors: 2000 },
+    { name: "Thu", visitors: 2780 },
+    { name: "Fri", visitors: 1890 },
+    { name: "Sat", visitors: 8390 },
+    { name: "Sun", visitors: 9490 },
+  ];
   return (
     <div className="min-h-screen bg-background font-sans text-foreground flex flex-col">
       <Navbar />
@@ -39,34 +56,19 @@ export default function CrowdDashboard() {
 
             <TabsContent value="overview" className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <CrowdStatusCard 
-                  templeName="Somnath" 
-                  currentWaitTime={15} 
-                  status="Low" 
-                  nextAarti="7:00 PM" 
-                  prediction="Stable"
-                />
-                <CrowdStatusCard 
-                  templeName="Dwarka" 
-                  currentWaitTime={45} 
-                  status="Moderate" 
-                  nextAarti="7:30 PM" 
-                  prediction="Rising"
-                />
-                <CrowdStatusCard 
-                  templeName="Ambaji" 
-                  currentWaitTime={10} 
-                  status="Low" 
-                  nextAarti="7:00 PM" 
-                  prediction="Stable"
-                />
-                <CrowdStatusCard 
-                  templeName="Pavagadh" 
-                  currentWaitTime={90} 
-                  status="High" 
-                  nextAarti="N/A" 
-                  prediction="Peaking"
-                />
+                {temples.map((temple) => {
+                  const data = crowdData?.find((c: any) => c.templeId === temple.id);
+                  return data ? (
+                    <CrowdStatusCard 
+                      key={temple.id}
+                      templeId={temple.id}
+                      templeName={data.templeName}
+                      currentWaitTime={data.currentWaitTime}
+                      status={data.status}
+                      nextAarti={temple.nextAarti}
+                    />
+                  ) : null;
+                })}
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

@@ -36,7 +36,7 @@ export function PilgrimAssistant() {
     }
   }, [messages, isTyping]);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!input.trim()) return;
 
     const userMsg = { role: "user" as const, content: input };
@@ -44,26 +44,33 @@ export function PilgrimAssistant() {
     setInput("");
     setIsTyping(true);
 
-    // Mock AI Response logic based on keywords
-    setTimeout(() => {
-      let responseText = "I'm not sure about that specific detail, but generally early mornings (4 AM - 6 AM) are best for Darshan.";
-      const lowerInput = userMsg.content.toLowerCase();
+    try {
+      // Call backend AI chat API
+      const sessionId = sessionStorage.getItem("chatSessionId") || crypto.randomUUID();
+      sessionStorage.setItem("chatSessionId", sessionId);
 
-      if (lowerInput.includes("somnath") || lowerInput.includes("time")) {
-        responseText = "For Somnath Mahadev, the best time for Darshan is early morning at 6:00 AM or during the evening Aarti at 7:00 PM. Currently, the wait time is approx 15 mins.";
-      } else if (lowerInput.includes("dwarka") || lowerInput.includes("dwarkadhish")) {
-        responseText = "Dwarkadhish Temple is usually crowded during Mangala Aarti. I suggest visiting between 1:00 PM and 4:00 PM for a quicker Darshan.";
-      } else if (lowerInput.includes("ambaji")) {
-        responseText = "Ambaji is seeing moderate crowds today. The ropeway to Gabbar Hill has a 20-minute wait time.";
-      } else if (lowerInput.includes("pavagadh") || lowerInput.includes("steps")) {
-        responseText = "Pavagadh involves a climb. The ropeway is operational. It's best to start your climb early at 5 AM to avoid the afternoon heat.";
-      } else if (lowerInput.includes("food") || lowerInput.includes("stay")) {
-        responseText = "There are several Dharamshalas and guest houses near all temples. Would you like me to list the trusted ones?";
-      }
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: userMsg.content,
+          sessionId
+        })
+      });
 
-      setMessages(prev => [...prev, { role: "assistant", content: responseText }]);
+      if (!response.ok) throw new Error("Failed to get AI response");
+
+      const data = await response.json();
+      setMessages(prev => [...prev, { role: "assistant", content: data.response }]);
+    } catch (error) {
+      console.error("Chat error:", error);
+      setMessages(prev => [...prev, { 
+        role: "assistant", 
+        content: "I apologize, I'm having trouble connecting right now. Please try again." 
+      }]);
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
   return (

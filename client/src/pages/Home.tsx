@@ -6,10 +6,27 @@ import { PilgrimAssistant } from "@/components/ai/PilgrimAssistant";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Map, Calendar, Shield } from "lucide-react";
 import { Link } from "wouter";
+import { useQuery } from "@tanstack/react-query";
 
 import aiBg from "@assets/generated_images/abstract_ai_technology_meets_spirituality_background.png";
 
 export default function Home() {
+  const { data: crowdData } = useQuery({
+    queryKey: ["allCrowdData"],
+    queryFn: async () => {
+      const res = await fetch("/api/crowd/all");
+      if (!res.ok) throw new Error("Failed to fetch crowd data");
+      return res.json();
+    },
+    refetchInterval: 30000, // Refresh every 30 seconds
+  });
+
+  const temples = [
+    { id: "somnath", nextAarti: "7:00 PM" },
+    { id: "dwarka", nextAarti: "7:30 PM" },
+    { id: "ambaji", nextAarti: "7:00 PM" },
+    { id: "pavagadh", nextAarti: "N/A" },
+  ];
   return (
     <div className="min-h-screen bg-background font-sans text-foreground">
       <Navbar />
@@ -33,34 +50,19 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <CrowdStatusCard 
-                templeName="Somnath" 
-                currentWaitTime={15} 
-                status="Low" 
-                nextAarti="7:00 PM" 
-                prediction="Crowd expected to increase by 5 PM"
-              />
-              <CrowdStatusCard 
-                templeName="Dwarka" 
-                currentWaitTime={45} 
-                status="Moderate" 
-                nextAarti="7:30 PM" 
-                prediction="Wait time likely to drop after 8 PM"
-              />
-              <CrowdStatusCard 
-                templeName="Ambaji" 
-                currentWaitTime={10} 
-                status="Low" 
-                nextAarti="7:00 PM" 
-                prediction="Ideal time to visit is now"
-              />
-              <CrowdStatusCard 
-                templeName="Pavagadh" 
-                currentWaitTime={90} 
-                status="High" 
-                nextAarti="N/A" 
-                prediction="Ropeway queue is very long"
-              />
+              {temples.map((temple) => {
+                const data = crowdData?.find((c: any) => c.templeId === temple.id);
+                return data ? (
+                  <CrowdStatusCard 
+                    key={temple.id}
+                    templeId={temple.id}
+                    templeName={data.templeName}
+                    currentWaitTime={data.currentWaitTime}
+                    status={data.status}
+                    nextAarti={temple.nextAarti}
+                  />
+                ) : null;
+              })}
             </div>
           </div>
         </section>
