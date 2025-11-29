@@ -10,6 +10,15 @@ interface Message {
   content: string;
 }
 
+// TODO: Integrate Gemini API here
+// Requires backend proxy for API key security
+const GEMINI_SYSTEM_PROMPT = `
+You are Yatra Sahayak, a helpful spiritual guide for pilgrims visiting temples in Gujarat (Somnath, Dwarka, Ambaji, Pavagadh). 
+Provide accurate information about timings, history, and crowd status. 
+Be polite, use "Namaste" or "Jay Somnath/Jay Dwarkadhish" where appropriate.
+Keep answers concise and helpful.
+`;
+
 export function PilgrimAssistant() {
   const [messages, setMessages] = useState<Message[]>([
     { 
