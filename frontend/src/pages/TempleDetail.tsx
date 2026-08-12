@@ -11,11 +11,13 @@ import { BookingDialog } from "@/components/booking/BookingDialog";
 import { CrowdStatusCard } from "@/components/dashboard/CrowdStatusCard";
 import { WeatherWidget } from "@/components/weather/WeatherWidget";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 
 export default function TempleDetail() {
   const [, params] = useRoute("/temples/:id");
   const templeId = params?.id;
   const temple = temples.find(t => t.id === templeId);
+  const { t } = useTranslation();
 
   const { data: crowdData } = useQuery({
     queryKey: ["crowdData", templeId],
@@ -34,9 +36,9 @@ export default function TempleDetail() {
         <Navbar />
         <main className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
-            <h1 className="text-2xl font-bold mb-4">Temple Not Found</h1>
+            <h1 className="text-2xl font-bold mb-4">{t("templeDetail.notFound")}</h1>
             <Link href="/temples">
-              <Button>Back to Temples</Button>
+              <Button>{t("templeDetail.backToTemples")}</Button>
             </Link>
           </div>
         </main>
@@ -60,7 +62,7 @@ export default function TempleDetail() {
         <div className="container mx-auto px-4 md:px-6">
           <Link href="/temples">
             <Button variant="ghost" className="mb-6">
-              <ArrowLeft className="w-4 h-4 mr-2" /> Back to Temples
+              <ArrowLeft className="w-4 h-4 mr-2" /> {t("templeDetail.backToTemples")}
             </Button>
           </Link>
 
@@ -85,7 +87,7 @@ export default function TempleDetail() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>About {temple.name}</CardTitle>
+                  <CardTitle>{t("templeDetail.about")} {temple.name}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <p className="text-muted-foreground leading-relaxed">{temple.description}</p>
@@ -150,12 +152,12 @@ export default function TempleDetail() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Book Your Visit</CardTitle>
+                  <CardTitle>{t("templeDetail.bookDarshan")}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <BookingDialog templeId={temple.id} templeName={temple.name}>
                     <Button className="w-full" size="lg">
-                      Book Darshan
+                      {t("templeDetail.bookDarshan")}
                     </Button>
                   </BookingDialog>
                 </CardContent>
@@ -164,25 +166,25 @@ export default function TempleDetail() {
               {/* Quick Links */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Plan Your Visit</CardTitle>
+                  <CardTitle>{t("home.planYourVisit")}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2">
                   <Link href="/festivals">
                     <Button variant="outline" className="w-full justify-start">
                       <Calendar className="w-4 h-4 mr-2" />
-                      Festival Calendar
+                      {t("nav.festivalCalendar")}
                     </Button>
                   </Link>
                   <Link href="/routes">
                     <Button variant="outline" className="w-full justify-start">
                       <MapPin className="w-4 h-4 mr-2" />
-                      Temple Routes
+                      {t("nav.templeRoutes")}
                     </Button>
                   </Link>
                   <Link href="/parking">
                     <Button variant="outline" className="w-full justify-start">
                       <Info className="w-4 h-4 mr-2" />
-                      Parking Info
+                      {t("nav.smartParking")}
                     </Button>
                   </Link>
                 </CardContent>

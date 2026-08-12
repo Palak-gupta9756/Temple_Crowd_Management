@@ -10,6 +10,7 @@ import { useState } from "react";
 import { format, parseISO, isWithinInterval, addDays } from "date-fns";
 import { CalendarDays, Users, Star, AlertTriangle, Sparkles, MapPin, Clock, TrendingUp } from "lucide-react";
 import { temples } from "@/data/temples";
+import { useTranslation } from "react-i18next";
 
 interface Festival {
   id: string;
@@ -26,6 +27,7 @@ interface Festival {
 }
 
 export default function FestivalCalendar() {
+  const { t } = useTranslation();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [selectedTemple, setSelectedTemple] = useState<string>("all");
 
@@ -125,10 +127,10 @@ export default function FestivalCalendar() {
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-orange-800 mb-2 flex items-center justify-center gap-2">
             <CalendarDays className="w-10 h-10" />
-            Festival Calendar
+            {t("festivalCalendar.title")}
           </h1>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Plan your pilgrimage around festivals. Know which days to expect crowds and get special darshan timings.
+            {t("festivalCalendar.subtitle")}
           </p>
         </div>
 

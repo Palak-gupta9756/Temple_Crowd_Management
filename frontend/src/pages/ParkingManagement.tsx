@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { temples } from "@/data/temples";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 interface ParkingLot {
   id: string;
@@ -44,6 +45,7 @@ interface ParkingSummary {
 }
 
 export default function ParkingManagement() {
+  const { t } = useTranslation();
   const [selectedTemple, setSelectedTemple] = useState<string>("somnath");
   const [vehicleType, setVehicleType] = useState<"two-wheeler" | "car" | "bus">("car");
 
@@ -136,10 +138,10 @@ export default function ParkingManagement() {
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-blue-800 mb-2 flex items-center justify-center gap-2">
             <ParkingCircle className="w-10 h-10" />
-            Smart Parking
+            {t("parking.title")}
           </h1>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Find available parking near temples. Real-time occupancy updates and best spot recommendations.
+            {t("parking.subtitle")}
           </p>
         </div>
 
@@ -147,7 +149,7 @@ export default function ParkingManagement() {
         <div className="flex flex-wrap justify-center gap-4 mb-8">
           <Select value={selectedTemple} onValueChange={setSelectedTemple}>
             <SelectTrigger className="w-48">
-              <SelectValue placeholder="Select Temple" />
+              <SelectValue placeholder={t("common.selectTemple")} />
             </SelectTrigger>
             <SelectContent>
               {temples.map(temple => (
@@ -158,29 +160,29 @@ export default function ParkingManagement() {
 
           <Select value={vehicleType} onValueChange={(v) => setVehicleType(v as any)}>
             <SelectTrigger className="w-48">
-              <SelectValue placeholder="Vehicle Type" />
+              <SelectValue placeholder={t("parking.vehicleType")} />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="car">
                 <div className="flex items-center gap-2">
-                  <Car className="w-4 h-4" /> Car
+                  <Car className="w-4 h-4" /> {t("parking.car")}
                 </div>
               </SelectItem>
               <SelectItem value="two-wheeler">
                 <div className="flex items-center gap-2">
-                  <Bike className="w-4 h-4" /> Two-Wheeler
+                  <Bike className="w-4 h-4" /> {t("parking.twoWheeler")}
                 </div>
               </SelectItem>
               <SelectItem value="bus">
                 <div className="flex items-center gap-2">
-                  <Bus className="w-4 h-4" /> Bus
+                  <Bus className="w-4 h-4" /> {t("parking.bus")}
                 </div>
               </SelectItem>
             </SelectContent>
           </Select>
 
           <Button onClick={() => refetch()} variant="outline">
-            Refresh
+            {t("common.refresh")}
           </Button>
         </div>
 

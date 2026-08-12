@@ -15,6 +15,7 @@ import {
   Plus, AlertCircle, Mail, Building2, Eye, Wallet, Smartphone,
   Key, Shirt, Footprints, FileText, BookOpen, HelpCircle
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface LostItem {
   _id: string;
@@ -94,6 +95,7 @@ const categoryIcons: Record<string, string> = {
 };
 
 export default function LostAndFound() {
+  const { t } = useTranslation();
   const [selectedTemple, setSelectedTemple] = useState<string>("all");
   const [activeTab, setActiveTab] = useState<string>("found");
   const [lostItems, setLostItems] = useState<LostItem[]>([]);
@@ -336,17 +338,17 @@ export default function LostAndFound() {
           <div>
             <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
               <Search className="h-8 w-8 text-orange-500" />
-              Lost & Found
+              {t("lostFound.title")}
             </h1>
-            <p className="text-gray-600 mt-1">Report lost items or help reunite found items with their owners</p>
+            <p className="text-gray-600 mt-1">{t("lostFound.subtitle")}</p>
           </div>
           
           <Select value={selectedTemple} onValueChange={setSelectedTemple}>
             <SelectTrigger className="w-[200px]">
-              <SelectValue placeholder="All Temples" />
+              <SelectValue placeholder={t("common.allTemples")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Temples</SelectItem>
+              <SelectItem value="all">{t("common.allTemples")}</SelectItem>
               {temples.map(temple => (
                 <SelectItem key={temple.id} value={temple.id}>
                   {temple.name}

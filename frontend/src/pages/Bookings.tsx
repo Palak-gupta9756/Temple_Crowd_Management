@@ -9,6 +9,7 @@ import { Calendar, Clock, Users, MapPin, X, User, CreditCard, ChevronRight } fro
 import { useAuth } from "@/lib/auth-context";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 import {
   Dialog,
   DialogContent,
@@ -49,6 +50,7 @@ interface Booking {
 export default function BookingsPage() {
   const { user, isLoading: authLoading } = useAuth();
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
+  const { t } = useTranslation();
 
   const { data: bookings, isLoading } = useQuery<Booking[]>({
     queryKey: ["bookings"],
@@ -97,14 +99,14 @@ export default function BookingsPage() {
         <main className="flex-1 container mx-auto px-4 py-8 pt-24 flex flex-col items-center justify-center">
           <Card className="max-w-md w-full">
             <CardHeader>
-              <CardTitle>Login Required</CardTitle>
+              <CardTitle>{t("common.loginRequired")}</CardTitle>
               <CardDescription>
-                Please login to view your bookings
+                {t("bookings.loginDesc")}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <Link href="/login">
-                <Button className="w-full">Login</Button>
+                <Button className="w-full">{t("common.loginBtn")}</Button>
               </Link>
             </CardContent>
           </Card>
@@ -118,7 +120,7 @@ export default function BookingsPage() {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 container mx-auto px-4 py-8 pt-24">
-        <h1 className="text-3xl font-bold mb-6">My Bookings</h1>
+        <h1 className="text-3xl font-bold mb-6">{t("bookings.title")}</h1>
 
         {isLoading ? (
           <div className="grid gap-4">
@@ -129,7 +131,7 @@ export default function BookingsPage() {
         ) : !bookings || bookings.length === 0 ? (
           <Card>
             <CardContent className="py-12 text-center">
-              <p className="text-muted-foreground mb-4">No bookings found</p>
+              <p className="text-muted-foreground mb-4">{t("bookings.noBookings")}</p>
               <Link href="/temples">
                 <Button>Browse Temples</Button>
               </Link>
@@ -172,7 +174,7 @@ export default function BookingsPage() {
                     </div>
                     <div className="flex items-center gap-2">
                       <Users className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm">{booking.numberOfDevotees} devotees</span>
+                      <span className="text-sm">{booking.numberOfDevotees} {t("bookings.devotees")}</span>
                     </div>
                     <div>
                       <Badge variant="outline">{booking.darshanType} Darshan</Badge>

@@ -3,6 +3,7 @@ import { useLocation } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -47,6 +48,7 @@ type RegisterForm = z.infer<typeof registerSchema>;
 export function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { t } = useTranslation();
 
   // ✅ wouter navigation
   const [, setLocation] = useLocation();
@@ -119,10 +121,10 @@ export function RegisterPage() {
 
             <div>
               <CardTitle className="text-2xl font-serif text-amber-900">
-                Join Our Community
+                {t("register.createAccount")}
               </CardTitle>
               <CardDescription className="text-amber-700">
-                Create your account to begin your spiritual journey
+                {t("register.subtitle")}
               </CardDescription>
             </div>
           </CardHeader>
@@ -140,11 +142,11 @@ export function RegisterPage() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-amber-800">
-                        Full Name
+                        {t("register.nameLabel")}
                       </FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Your full name"
+                          placeholder={t("register.namePlaceholder")}
                           className="border-amber-300 focus:border-amber-500 focus:ring-amber-500"
                           {...field}
                         />
@@ -161,12 +163,12 @@ export function RegisterPage() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-amber-800">
-                        Email
+                        {t("register.emailLabel")}
                       </FormLabel>
                       <FormControl>
                         <Input
                           type="email"
-                          placeholder="your@email.com"
+                          placeholder={t("register.emailPlaceholder")}
                           className="border-amber-300 focus:border-amber-500 focus:ring-amber-500"
                           {...field}
                         />
@@ -183,12 +185,12 @@ export function RegisterPage() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-amber-800">
-                        Phone Number
+                        {t("register.phoneLabel")}
                       </FormLabel>
                       <FormControl>
                         <Input
                           type="tel"
-                          placeholder="Your phone number"
+                          placeholder={t("register.phonePlaceholder")}
                           className="border-amber-300 focus:border-amber-500 focus:ring-amber-500"
                           {...field}
                         />
@@ -205,13 +207,13 @@ export function RegisterPage() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-amber-800">
-                        Password
+                        {t("register.passwordLabel")}
                       </FormLabel>
                       <FormControl>
                         <div className="relative">
                           <Input
                             type={showPassword ? "text" : "password"}
-                            placeholder="Create a password"
+                            placeholder={t("register.passwordPlaceholder")}
                             className="border-amber-300 focus:border-amber-500 focus:ring-amber-500 pr-10"
                             {...field}
                           />
@@ -264,7 +266,7 @@ export function RegisterPage() {
                   className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold shadow-lg"
                   disabled={isLoading}
                 >
-                  {isLoading ? "Creating Account..." : "Create Account"}
+                  {isLoading ? t("register.registering") : t("register.register")}
                 </Button>
               </form>
             </Form>
@@ -272,12 +274,12 @@ export function RegisterPage() {
             {/* Login Link */}
             <div className="mt-6 text-center">
               <p className="text-amber-700">
-                Already have an account?{" "}
+                {t("register.haveAccount")}{" "}
                 <button
                   onClick={() => setLocation("/login")}
                   className="text-amber-600 font-semibold hover:text-amber-800 underline"
                 >
-                  Sign in
+                  {t("register.signInHere")}
                 </button>
               </p>
             </div>

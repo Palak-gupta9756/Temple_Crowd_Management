@@ -6,9 +6,11 @@ import { useAuth } from "@/lib/auth-context";
 import { Link } from "wouter";
 import { User, Mail, Phone, Calendar, LogOut } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useTranslation } from "react-i18next";
 
 export default function ProfilePage() {
   const { user, isLoading, logout } = useAuth();
+  const { t } = useTranslation();
 
   const handleLogout = async () => {
     await logout();
@@ -35,14 +37,14 @@ export default function ProfilePage() {
         <main className="flex-1 container mx-auto px-4 py-8 pt-24 flex flex-col items-center justify-center">
           <Card className="max-w-md w-full">
             <CardHeader>
-              <CardTitle>Login Required</CardTitle>
+              <CardTitle>{t("common.loginRequired")}</CardTitle>
               <CardDescription>
-                Please login to view your profile
+                {t("profile.loginDesc")}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <Link href="/login">
-                <Button className="w-full">Login</Button>
+                <Button className="w-full">{t("common.loginBtn")}</Button>
               </Link>
             </CardContent>
           </Card>
@@ -56,7 +58,7 @@ export default function ProfilePage() {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 container mx-auto px-4 py-8 pt-24">
-        <h1 className="text-3xl font-bold mb-6">My Profile</h1>
+        <h1 className="text-3xl font-bold mb-6">{t("profile.title")}</h1>
 
         <div className="max-w-2xl">
           <Card>
@@ -67,7 +69,7 @@ export default function ProfilePage() {
                 </div>
                 <div>
                   <CardTitle className="text-2xl">{user.name}</CardTitle>
-                  <CardDescription>Devotee</CardDescription>
+                  <CardDescription>{t("profile.devotee")}</CardDescription>
                 </div>
               </div>
             </CardHeader>
@@ -76,7 +78,7 @@ export default function ProfilePage() {
                 <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
                   <Mail className="w-5 h-5 text-muted-foreground" />
                   <div>
-                    <p className="text-sm text-muted-foreground">Email</p>
+                    <p className="text-sm text-muted-foreground">{t("profile.email")}</p>
                     <p className="font-medium">{user.email}</p>
                   </div>
                 </div>
@@ -85,7 +87,7 @@ export default function ProfilePage() {
                   <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
                     <Phone className="w-5 h-5 text-muted-foreground" />
                     <div>
-                      <p className="text-sm text-muted-foreground">Phone</p>
+                      <p className="text-sm text-muted-foreground">{t("profile.phone")}</p>
                       <p className="font-medium">{user.phone}</p>
                     </div>
                   </div>
@@ -96,12 +98,12 @@ export default function ProfilePage() {
                 <Link href="/my-bookings">
                   <Button variant="outline">
                     <Calendar className="w-4 h-4 mr-2" />
-                    View My Bookings
+                    {t("profile.viewBookings")}
                   </Button>
                 </Link>
                 <Button variant="destructive" onClick={handleLogout}>
                   <LogOut className="w-4 h-4 mr-2" />
-                  Logout
+                  {t("profile.logout")}
                 </Button>
               </div>
             </CardContent>

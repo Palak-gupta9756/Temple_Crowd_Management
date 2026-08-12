@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { temples } from "@/data/temples";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 interface Zone {
   id: string;
@@ -47,6 +48,7 @@ interface TempleMapData {
 }
 
 export default function TempleRoutes() {
+  const { t } = useTranslation();
   const [selectedTemple, setSelectedTemple] = useState<string>("somnath");
   const [isAccessible, setIsAccessible] = useState(false);
   const [hasTime, setHasTime] = useState(true);
@@ -127,10 +129,10 @@ export default function TempleRoutes() {
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-green-800 mb-2 flex items-center justify-center gap-2">
             <Map className="w-10 h-10" />
-            Temple Route Guide
+            {t("routes.title")}
           </h1>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Navigate through the temple efficiently. Find the best route based on your preferences and accessibility needs.
+            {t("routes.subtitle")}
           </p>
         </div>
 
@@ -138,7 +140,7 @@ export default function TempleRoutes() {
         <div className="flex justify-center mb-8">
           <Select value={selectedTemple} onValueChange={setSelectedTemple}>
             <SelectTrigger className="w-64">
-              <SelectValue placeholder="Select Temple" />
+              <SelectValue placeholder={t("common.selectTemple")} />
             </SelectTrigger>
             <SelectContent>
               {temples.map(temple => (

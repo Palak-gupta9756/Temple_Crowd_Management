@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 // Temple images
 const somnathImg = "/images/majestic_somnath_temple_at_sunset_by_the_sea.png";
@@ -11,6 +12,7 @@ const ambajiImg = "/images/ambaji_temple_glowing_at_twilight.png";
 const pavagadhImg = "/images/pavagadh_kalika_mata_temple_on_hilltop.png";
 
 export function Hero() {
+  const { t } = useTranslation();
   return (
     <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
       {/* Background Slider/Image - simplified to Somnath for now with overlay */}
@@ -36,29 +38,29 @@ export function Hero() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
             </span>
-            Live Crowd Tracking Active
+            {t("hero.badge")}
           </div>
           
           <h1 className="font-heading font-extrabold text-5xl md:text-7xl leading-tight mb-6 text-foreground drop-shadow-sm">
-            Divine Journeys, <br />
+            {t("hero.heading1")} <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
-              Smartly Planned.
+              {t("hero.heading2")}
             </span>
           </h1>
           
           <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed max-w-lg">
-            Avoid long queues and plan your darshan at Somnath, Dwarka, Ambaji, and Pavagadh with our AI-powered crowd management system.
+            {t("hero.subtitle")}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">
             <Link href="/dashboard">
               <Button size="lg" className="text-lg px-8 rounded-full shadow-lg shadow-primary/20">
-                Check Live Status <ArrowRight className="ml-2 w-5 h-5" />
+                {t("hero.checkLiveStatus")} <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
             <Link href="/ai-planner">
               <Button size="lg" variant="outline" className="text-lg px-8 rounded-full bg-background/50 backdrop-blur-sm hover:bg-background/80 border-primary/20">
-                Ask AI Assistant
+                {t("hero.askAI")}
               </Button>
             </Link>
           </div>
@@ -72,10 +74,10 @@ export function Hero() {
           className="hidden md:grid grid-cols-2 gap-4"
         >
           {[
-            { name: "Somnath", img: somnathImg, wait: "15 min", status: "Low Crowd" },
-            { name: "Dwarka", img: dwarkaImg, wait: "45 min", status: "Moderate" },
-            { name: "Ambaji", img: ambajiImg, wait: "10 min", status: "Low Crowd" },
-            { name: "Pavagadh", img: pavagadhImg, wait: "90 min", status: "High Crowd" },
+            { name: "Somnath", img: somnathImg, wait: "15 min", status: t("hero.lowCrowd") },
+            { name: "Dwarka", img: dwarkaImg, wait: "45 min", status: t("hero.moderate") },
+            { name: "Ambaji", img: ambajiImg, wait: "10 min", status: t("hero.lowCrowd") },
+            { name: "Pavagadh", img: pavagadhImg, wait: "90 min", status: t("hero.highCrowd") },
           ].map((temple, idx) => (
             <div key={idx} className="group relative h-48 rounded-2xl overflow-hidden border border-white/10 shadow-xl cursor-pointer hover:-translate-y-1 transition-transform duration-300">
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />

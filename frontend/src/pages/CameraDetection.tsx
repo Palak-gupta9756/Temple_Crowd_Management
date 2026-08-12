@@ -9,8 +9,10 @@ import { temples } from "@/data/temples";
 import { Camera, CameraOff, Users, Send, Activity, Loader2 } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { useTranslation } from "react-i18next";
 
 export default function CameraDetection() {
+  const { t } = useTranslation();
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -260,9 +262,9 @@ export default function CameraDetection() {
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto space-y-6">
           <div className="text-center">
-            <h1 className="text-3xl font-bold">Live Face Detection</h1>
+            <h1 className="text-3xl font-bold">{t("camera.title")}</h1>
             <p className="text-muted-foreground mt-2">
-              Detect faces using your camera and update temple crowd status in real-time
+              {t("camera.subtitle")}
             </p>
           </div>
 
@@ -276,10 +278,10 @@ export default function CameraDetection() {
                 </CardTitle>
                 <CardDescription>
                   {isLoading
-                    ? "Loading face detection models..."
+                    ? t("camera.modelLoading")
                     : isModelLoaded
-                    ? "Face detection ready"
-                    : "Models failed to load"}
+                    ? t("camera.modelsLoaded")
+                    : t("camera.modelFailed")}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -306,7 +308,7 @@ export default function CameraDetection() {
                     <div className="absolute inset-0 flex items-center justify-center bg-muted">
                       <div className="text-center">
                         <CameraOff className="h-12 w-12 mx-auto text-muted-foreground mb-2" />
-                        <p className="text-muted-foreground">Camera is off</p>
+                        <p className="text-muted-foreground">{t("camera.cameraOff")}</p>
                       </div>
                     </div>
                   )}
@@ -320,12 +322,12 @@ export default function CameraDetection() {
                       className="flex-1"
                     >
                       <Camera className="mr-2 h-4 w-4" />
-                      Start Camera
+                      {t("camera.startCamera")}
                     </Button>
                   ) : (
                     <Button onClick={stopCamera} variant="destructive" className="flex-1">
                       <CameraOff className="mr-2 h-4 w-4" />
-                      Stop Camera
+                      {t("camera.stopCamera")}
                     </Button>
                   )}
 
@@ -349,7 +351,7 @@ export default function CameraDetection() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Users className="h-5 w-5" />
-                    Face Count
+                    {t("camera.faceCount")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -357,7 +359,7 @@ export default function CameraDetection() {
                     {faceCount}
                   </div>
                   <p className="text-center text-muted-foreground mt-2">
-                    faces detected
+                    {t("camera.detected")}
                   </p>
                   {crowdStatus && (
                     <div className="mt-4 text-center">
@@ -371,7 +373,7 @@ export default function CameraDetection() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Send to Temple</CardTitle>
+                  <CardTitle>{t("camera.sendToTemple")}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <Select value={selectedTemple} onValueChange={setSelectedTemple}>

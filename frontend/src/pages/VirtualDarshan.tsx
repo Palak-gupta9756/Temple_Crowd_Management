@@ -9,6 +9,7 @@ import {
   Volume2, VolumeX, Maximize2, Share2, Heart,
   Sun, Moon, Bell, Camera, MapPin, Info, Radio
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface TempleStream {
   id: string;
@@ -150,6 +151,7 @@ export default function VirtualDarshan() {
   const [isMuted, setIsMuted] = useState(true);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [notifications, setNotifications] = useState<string[]>([]);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
@@ -225,10 +227,10 @@ export default function VirtualDarshan() {
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 bg-red-100 text-red-700 px-4 py-2 rounded-full mb-4">
             <Radio className="h-4 w-4 animate-pulse" />
-            <span className="font-semibold">LIVE NOW</span>
+            <span className="font-semibold">{t("virtualDarshan.liveNow")}</span>
           </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Virtual Darshan</h1>
-          <p className="text-xl text-gray-600">Experience divine blessings from the comfort of your home</p>
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">{t("virtualDarshan.title")}</h1>
+          <p className="text-xl text-gray-600">{t("virtualDarshan.subtitle")}</p>
         </div>
 
         {/* Temple Selector */}

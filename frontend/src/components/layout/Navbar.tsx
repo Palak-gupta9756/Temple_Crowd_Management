@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { BookingDialog } from "@/components/booking/BookingDialog";
 import { useAuth } from "@/lib/auth-context";
+import { useTranslation } from "react-i18next";
+import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,6 +20,7 @@ export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user, logout, isLoading } = useAuth();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,23 +31,23 @@ export function Navbar() {
   }, []);
 
   const navLinks: { href: string; label: string; icon?: React.ComponentType<{ className?: string }> }[] = [
-    { href: "/", label: "Home" },
-    { href: "/temples", label: "Temples" },
-    { href: "/dashboard", label: "Live Crowd Status" },
-    { href: "/ai-planner", label: "Yatra AI Planner" },
-    { href: "/virtual-darshan", label: "Virtual Darshan", icon: Video },
+    { href: "/", label: t("nav.home") },
+    { href: "/temples", label: t("nav.temples") },
+    { href: "/dashboard", label: t("nav.liveStatus") },
+    { href: "/ai-planner", label: t("nav.aiPlanner") },
+    { href: "/virtual-darshan", label: t("nav.virtualDarshan"), icon: Video },
   ];
 
   const planningLinks = [
-    { href: "/festivals", label: "Festival Calendar", icon: CalendarDays },
-    { href: "/routes", label: "Temple Routes", icon: Map },
-    { href: "/parking", label: "Smart Parking", icon: ParkingCircle },
+    { href: "/festivals", label: t("nav.festivalCalendar"), icon: CalendarDays },
+    { href: "/routes", label: t("nav.templeRoutes"), icon: Map },
+    { href: "/parking", label: t("nav.smartParking"), icon: ParkingCircle },
   ];
 
   const safetyLinks = [
-    { href: "/emergency", label: "Emergency Services", icon: Siren },
-    { href: "/medical", label: "Medical Assistance", icon: Heart },
-    { href: "/lost-found", label: "Lost & Found", icon: Package },
+    { href: "/emergency", label: t("nav.emergencyServices"), icon: Siren },
+    { href: "/medical", label: t("nav.medicalAssistance"), icon: Heart },
+    { href: "/lost-found", label: t("nav.lostFound"), icon: Package },
   ];
 
   const handleLogout = async () => {
@@ -103,7 +106,7 @@ export function Navbar() {
                     : "text-muted-foreground"
                 )}
               >
-                Plan Your Visit
+                {t("nav.planVisit")}
                 <ChevronDown className="w-4 h-4" />
               </button>
             </DropdownMenuTrigger>
@@ -133,7 +136,7 @@ export function Navbar() {
                 )}
               >
                 <Siren className="w-4 h-4 text-red-500" />
-                Safety
+                {t("nav.safety")}
                 <ChevronDown className="w-4 h-4" />
               </button>
             </DropdownMenuTrigger>
@@ -157,15 +160,17 @@ export function Navbar() {
             <div className="flex items-center gap-2">
               <Link href="/login">
                 <Button variant="default" size="sm" className="rounded-full">
-                  Sign In
+                  {t("nav.signIn")}
                 </Button>
               </Link>
             </div>
           ) : null}
 
+          <LanguageSwitcher />
+
           <BookingDialog>
             <Button variant="default" size="sm" className="rounded-full px-6">
-              Book Darshan
+              {t("nav.bookDarshan")}
             </Button>
           </BookingDialog>
 
@@ -181,19 +186,19 @@ export function Navbar() {
                   <Link href="/profile">
                     <span className="cursor-pointer flex items-center gap-2">
                       <User className="w-4 h-4" />
-                      Profile
+                      {t("nav.profile")}
                     </span>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/my-bookings">
-                    <span className="cursor-pointer">My Bookings</span>
+                    <span className="cursor-pointer">{t("nav.myBookings")}</span>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout} className="text-red-600 focus:text-red-600">
                   <LogOut className="w-4 h-4 mr-2" />
-                  Logout
+                  {t("nav.logout")}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -229,7 +234,7 @@ export function Navbar() {
 
           {/* Planning Links for Mobile */}
           <div className="border-t border-border pt-3 mt-1">
-            <p className="text-xs text-muted-foreground px-2 mb-2">Plan Your Visit</p>
+            <p className="text-xs text-muted-foreground px-2 mb-2">{t("nav.planVisit")}</p>
             {planningLinks.map((link) => (
               <Link key={link.href} href={link.href}>
                 <a
@@ -250,7 +255,7 @@ export function Navbar() {
           <div className="border-t border-border pt-3 mt-1">
             <p className="text-xs text-muted-foreground px-2 mb-2 flex items-center gap-1">
               <Siren className="w-3 h-3 text-red-500" />
-              Safety & Emergency
+              {t("nav.safety")}
             </p>
             {safetyLinks.map((link) => (
               <Link key={link.href} href={link.href}>
@@ -274,7 +279,7 @@ export function Navbar() {
             <div className="flex flex-col gap-2">
               <Link href="/login">
                 <Button variant="outline" className="w-full" onClick={() => setIsMobileMenuOpen(false)}>
-                  Sign In
+                  {t("nav.signIn")}
                 </Button>
               </Link>
               <Link href="/register">
@@ -285,8 +290,12 @@ export function Navbar() {
             </div>
           ) : null}
 
+          <div className="flex justify-center pt-1 pb-1">
+            <LanguageSwitcher />
+          </div>
+
           <BookingDialog>
-            <Button className="w-full mt-2">Book Darshan</Button>
+            <Button className="w-full mt-2">{t("nav.bookDarshan")}</Button>
           </BookingDialog>
 
           {user && (
@@ -295,17 +304,17 @@ export function Navbar() {
                 <Link href="/profile">
                   <Button variant="outline" className="w-full mb-2" onClick={() => setIsMobileMenuOpen(false)}>
                     <User className="w-4 h-4 mr-2" />
-                    Profile
+                    {t("nav.profile")}
                   </Button>
                 </Link>
                 <Link href="/my-bookings">
                   <Button variant="outline" className="w-full mb-2" onClick={() => setIsMobileMenuOpen(false)}>
-                    My Bookings
+                    {t("nav.myBookings")}
                   </Button>
                 </Link>
                 <Button variant="destructive" className="w-full" onClick={handleLogout}>
                   <LogOut className="w-4 h-4 mr-2" />
-                  Logout
+                  {t("nav.logout")}
                 </Button>
               </div>
             </>

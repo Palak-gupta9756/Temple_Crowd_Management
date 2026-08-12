@@ -13,6 +13,7 @@ import {
   AlertTriangle, Phone, Siren, MapPin, Shield, Users, 
   Heart, Flame, Search, ChevronRight, Clock, Building2, AlertCircle
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface FirstAidStation {
   id: string;
@@ -82,6 +83,7 @@ const contactTypeIcons: Record<string, { icon: typeof Phone; color: string }> = 
 };
 
 export default function EmergencyAlert() {
+  const { t } = useTranslation();
   const [selectedTemple, setSelectedTemple] = useState<string>("somnath");
   const [firstAidStations, setFirstAidStations] = useState<FirstAidStation[]>([]);
   const [emergencyContacts, setEmergencyContacts] = useState<EmergencyContact[]>([]);
@@ -191,15 +193,15 @@ export default function EmergencyAlert() {
           <div>
             <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
               <Siren className="h-8 w-8 text-red-500" />
-              Emergency Services
+              {t("emergency.title")}
             </h1>
-            <p className="text-gray-600 mt-1">Quick access to emergency contacts, first-aid, and help</p>
+            <p className="text-gray-600 mt-1">{t("emergency.subtitle")}</p>
           </div>
           
           <div className="flex items-center gap-4">
             <Select value={selectedTemple} onValueChange={setSelectedTemple}>
               <SelectTrigger className="w-[200px]">
-                <SelectValue placeholder="Select Temple" />
+                <SelectValue placeholder={t("common.selectTemple")} />
               </SelectTrigger>
               <SelectContent>
                 {temples.map(temple => (

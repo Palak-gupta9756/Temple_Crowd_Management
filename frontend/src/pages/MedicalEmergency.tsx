@@ -15,6 +15,7 @@ import {
   Stethoscope, Accessibility, Activity, Wind, Plus, AlertCircle,
   Ambulance, User, ArrowRight
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface FirstAidStation {
   id: string;
@@ -62,6 +63,7 @@ const urgencyLevels = [
 ];
 
 export default function MedicalEmergency() {
+  const { t } = useTranslation();
   const [selectedTemple, setSelectedTemple] = useState<string>("somnath");
   const [firstAidStations, setFirstAidStations] = useState<FirstAidStation[]>([]);
   const [loading, setLoading] = useState(true);
@@ -150,15 +152,15 @@ export default function MedicalEmergency() {
           <div>
             <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
               <Heart className="h-8 w-8 text-red-500" />
-              Medical Assistance
+              {t("medical.title")}
             </h1>
-            <p className="text-gray-600 mt-1">Request medical help, wheelchairs, or ambulance services</p>
+            <p className="text-gray-600 mt-1">{t("medical.subtitle")}</p>
           </div>
           
           <div className="flex items-center gap-4">
             <Select value={selectedTemple} onValueChange={setSelectedTemple}>
               <SelectTrigger className="w-[200px]">
-                <SelectValue placeholder="Select Temple" />
+                <SelectValue placeholder={t("common.selectTemple")} />
               </SelectTrigger>
               <SelectContent>
                 {temples.map(temple => (

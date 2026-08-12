@@ -7,11 +7,13 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Map, Calendar, Shield } from "lucide-react";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 
 // AI background image
 const aiBg = "/images/abstract_ai_technology_meets_spirituality_background.png";
 
 export default function Home() {
+  const { t } = useTranslation();
   const { data: crowdData } = useQuery({
     queryKey: ["allCrowdData"],
     queryFn: async () => {
@@ -40,12 +42,12 @@ export default function Home() {
           <div className="container mx-auto px-4 md:px-6">
             <div className="flex flex-col md:flex-row justify-between items-end mb-10 gap-4">
               <div>
-                <h2 className="font-heading font-bold text-3xl md:text-4xl mb-2">Live Darshan Status</h2>
-                <p className="text-muted-foreground">Real-time crowd analytics to help you plan your visit right now.</p>
+                <h2 className="font-heading font-bold text-3xl md:text-4xl mb-2">{t("home.liveDarshanStatus")}</h2>
+                <p className="text-muted-foreground">{t("home.liveDarshanSubtitle")}</p>
               </div>
               <Link href="/dashboard">
                 <Button variant="outline" className="group">
-                  View Full Dashboard <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  {t("home.viewFullDashboard")} <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
             </div>
@@ -82,21 +84,21 @@ export default function Home() {
               
               <div className="order-1 lg:order-2">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-6">
-                  <span className="text-lg">🤖</span> AI Powered Planning
+                  <span className="text-lg">🤖</span> {t("home.aiPoweredPlanning")}
                 </div>
                 <h2 className="font-heading font-bold text-4xl md:text-5xl mb-6 leading-tight">
-                  Meet Your Smart <br />
-                  <span className="text-primary">Yatra Sahayak</span>
+                  {t("home.meetYourSahayak")} <br />
+                  <span className="text-primary">{t("home.yatraSahayak")}</span>
                 </h2>
                 <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                  Not sure when to visit? Have questions about accommodation or rituals? Our AI assistant is trained on historical data and real-time inputs to guide you perfectly.
+                  {t("home.aiSubtitle")}
                 </p>
                 
                 <ul className="space-y-6">
                   {[
-                    { icon: Calendar, title: "Smart Scheduling", desc: "Get personalized itineraries based on crowd predictions." },
-                    { icon: Map, title: "Route Optimization", desc: "Find the best path to cover multiple temples efficiently." },
-                    { icon: Shield, title: "Safety Alerts", desc: "Real-time updates on weather and emergency protocols." }
+                    { icon: Calendar, title: t("home.smartScheduling"), desc: t("home.smartSchedulingDesc") },
+                    { icon: Map, title: t("home.routeOptimization"), desc: t("home.routeOptimizationDesc") },
+                    { icon: Shield, title: t("home.safetyAlerts"), desc: t("home.safetyAlertsDesc") }
                   ].map((item, idx) => (
                     <li key={idx} className="flex gap-4">
                       <div className="w-12 h-12 rounded-xl bg-background border border-border shadow-sm flex items-center justify-center shrink-0 text-primary">

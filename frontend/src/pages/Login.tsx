@@ -3,6 +3,7 @@ import { useLocation } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -39,6 +40,7 @@ type LoginForm = z.infer<typeof loginSchema>;
 export function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { t } = useTranslation();
 
   // ✅ wouter navigation
   const [, setLocation] = useLocation();
@@ -61,17 +63,17 @@ export function LoginPage() {
       await login(data.email, data.password);
 
       toast({
-        title: "Welcome Back!",
-        description: `Namaste!`,
+        title: t("login.toastTitle"),
+        description: t("login.toastDesc"),
       });
 
       // Navigate after login
       setLocation("/");
     } catch (error) {
       toast({
-        title: "Login Failed",
+        title: t("login.toastFail"),
         description:
-          error instanceof Error ? error.message : "Invalid credentials",
+          error instanceof Error ? error.message : t("login.invalidCreds"),
         variant: "destructive",
       });
     } finally {
@@ -103,10 +105,10 @@ export function LoginPage() {
 
             <div>
               <CardTitle className="text-2xl font-serif text-amber-900">
-                Welcome Back
+                {t("login.welcomeBack")}
               </CardTitle>
               <CardDescription className="text-amber-700">
-                Sign in to continue your spiritual journey
+                {t("login.subtitle")}
               </CardDescription>
             </div>
           </CardHeader>
@@ -124,11 +126,11 @@ export function LoginPage() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-amber-800">
-                        Email
+                        {t("login.emailLabel")}
                       </FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="your@email.com"
+                          placeholder={t("login.emailPlaceholder")}
                           className="border-amber-300 focus:border-amber-500 focus:ring-amber-500"
                           {...field}
                         />
@@ -145,13 +147,13 @@ export function LoginPage() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-amber-800">
-                        Password
+                        {t("login.passwordLabel")}
                       </FormLabel>
                       <FormControl>
                         <div className="relative">
                           <Input
                             type={showPassword ? "text" : "password"}
-                            placeholder="Enter your password"
+                            placeholder={t("login.passwordPlaceholder")}
                             className="border-amber-300 focus:border-amber-500 focus:ring-amber-500 pr-10"
                             {...field}
                           />
@@ -183,7 +185,7 @@ export function LoginPage() {
                   className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold shadow-lg"
                   disabled={isLoading}
                 >
-                  {isLoading ? "Signing in..." : "Sign In"}
+                  {isLoading ? t("login.signingIn") : t("login.signIn")}
                 </Button>
               </form>
             </Form>
@@ -191,12 +193,12 @@ export function LoginPage() {
             {/* Register */}
             <div className="mt-6 text-center">
               <p className="text-amber-700">
-                Don't have an account?{" "}
+                {t("login.noAccount")}{" "}
                 <button
                   onClick={() => setLocation("/register")}
                   className="text-amber-600 font-semibold hover:text-amber-800 underline"
                 >
-                  Register here
+                  {t("login.registerHere")}
                 </button>
               </p>
             </div>

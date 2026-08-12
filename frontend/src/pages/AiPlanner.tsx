@@ -4,8 +4,10 @@ import { PilgrimAssistant } from "@/components/ai/PilgrimAssistant";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Bot, Sparkles } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function AiPlanner() {
+  const { t } = useTranslation();
   return (
     <div className="min-h-screen bg-background font-sans text-foreground flex flex-col">
       <Navbar />
@@ -20,9 +22,9 @@ export default function AiPlanner() {
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 text-primary mb-6">
                <Bot className="w-8 h-8" />
             </div>
-            <h1 className="font-heading font-bold text-4xl md:text-5xl mb-4">Yatra Sahayak AI</h1>
+            <h1 className="font-heading font-bold text-4xl md:text-5xl mb-4">{t("aiPlanner.title")}</h1>
             <p className="text-xl text-muted-foreground">
-              Your personal spiritual guide. Ask about temple timings, best routes, accommodation, or historical significance.
+              {t("aiPlanner.subtitle")}
             </p>
           </div>
 
@@ -35,16 +37,16 @@ export default function AiPlanner() {
               <Card className="bg-primary/5 border-primary/20">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-lg">
-                    <Sparkles className="w-4 h-4 text-primary" /> Suggested Prompts
+                    <Sparkles className="w-4 h-4 text-primary" /> {t("aiPlanner.suggestedPrompts")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   {[
-                    "Is Somnath crowded right now?",
-                    "Best route from Ahmedabad to Dwarka?",
-                    "Book a wheelchair at Ambaji",
-                    "History of Pavagadh temple",
-                    "Nearest Dharamshala to Dwarka"
+                    t("aiPlanner.prompt1"),
+                    t("aiPlanner.prompt2"),
+                    t("aiPlanner.prompt3"),
+                    t("aiPlanner.prompt4"),
+                    t("aiPlanner.prompt5")
                   ].map((prompt, idx) => (
                     <Button 
                       key={idx} 
@@ -59,11 +61,11 @@ export default function AiPlanner() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">My Itinerary</CardTitle>
+                  <CardTitle className="text-lg">{t("aiPlanner.myItinerary")}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground text-center py-8">
-                    Start chatting with the AI to build your pilgrimage plan.
+                    {t("aiPlanner.itineraryEmpty")}
                   </p>
                 </CardContent>
               </Card>

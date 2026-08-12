@@ -14,8 +14,10 @@ import { toast } from "@/hooks/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { useTranslation } from "react-i18next";
 
 export default function CrowdDashboard() {
+  const { t } = useTranslation();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [selectedTemple, setSelectedTemple] = useState<string>("all");
   const [analyticsTemple, setAnalyticsTemple] = useState<string>("all");
@@ -292,9 +294,9 @@ export default function CrowdDashboard() {
       <main className="flex-1 py-24">
         <div className="container mx-auto px-4 md:px-6">
           <div className="mb-10">
-            <h1 className="font-heading font-bold text-4xl mb-4">Live Crowd Control Center</h1>
+            <h1 className="font-heading font-bold text-4xl mb-4">{t("crowdDashboard.title")}</h1>
             <p className="text-muted-foreground text-lg max-w-3xl">
-              Monitor real-time footfall, queue status, and AI-driven predictions for all major pilgrimage sites in Gujarat.
+              {t("crowdDashboard.subtitle")}
             </p>
           </div>
 
@@ -311,7 +313,7 @@ export default function CrowdDashboard() {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                 </span>
-                Live - Auto-refreshing every 5 seconds
+                {t("crowdDashboard.liveUpdates")}
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -341,8 +343,8 @@ export default function CrowdDashboard() {
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <Card className="lg:col-span-2">
                   <CardHeader>
-                    <CardTitle>Weekly Visitor Trends</CardTitle>
-                    <CardDescription>Comparative footfall analysis for the current week.</CardDescription>
+                    <CardTitle>{t("crowdDashboard.weeklyTrends")}</CardTitle>
+                    <CardDescription>{t("crowdDashboard.subtitle")}</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="h-[300px] w-full">
@@ -389,13 +391,13 @@ export default function CrowdDashboard() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <CalendarIcon className="w-5 h-5 text-primary" />
-                      Plan Your Visit
+                      {t("home.planYourVisit")}
                     </CardTitle>
-                    <CardDescription>Select a date to see crowd predictions.</CardDescription>
+                    <CardDescription>{t("crowdDashboard.selectDate")}</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="space-y-2">
-                      <label className="text-sm font-medium">Select Temple</label>
+                      <label className="text-sm font-medium">{t("common.selectTemple")}</label>
                       <Select value={selectedTemple} onValueChange={setSelectedTemple}>
                         <SelectTrigger>
                           <SelectValue />
